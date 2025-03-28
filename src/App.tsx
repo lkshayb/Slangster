@@ -3,19 +3,25 @@ import './App.css'
 import { GoogleGenAI } from "@google/genai";
 
 function App() {
+  interface Message {
+    msg: string;
+    type: string;
+  } 
+  const [messages,setmessages] = useState<Message[]>([])
+
   const [mails,setmails] = useState<string[]>([])
   const [login,setlogin] = useState<boolean>(false)
-  const [messages,setmessages] = useState<string[]>([])
+  
   const mailref = useRef<HTMLInputElement>(null)
   const chatref = useRef<HTMLInputElement>(null)
   const ai = new GoogleGenAI({ apiKey: "AIzaSyAUOMKTtMI6zeHTnoK9xj0WGK6JUSgxIC4" });
 
-  async function sendreq(message){
+  async function sendreq(message : string){
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: "Talk like a Delhi guy who uses a lot of Hindi slang. Keep responses short, casual, and conversational. Write in English but use Hindi words in slang style. Don't mention that you're from Delhi! "+message,
     });
-    setmessages((e) => [...e, { msg: response.text, type: "#ffffff" }])
+    setmessages((e) => [...e, { msg: response.text ?? '', type: "#ffffff" }])
 
   }
 
