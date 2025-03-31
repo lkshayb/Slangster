@@ -56,7 +56,7 @@ function App() {
             {messages.length === 0 && (
               <div className="text-center text-gray-500 mt-8">
                 <p className="text-lg">Namaste! 🙏</p>
-                <p className="text-sm">Start the conversation with your Delhi buddy!</p>
+                <p className="text-sm">Start the conversation with your buddy!</p>
               </div>
             )}
             {messages.map((message, index) => (
