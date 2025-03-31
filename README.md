@@ -1,54 +1,43 @@
-# React + TypeScript + Vite
+# ChatBot App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple AI-powered chatbot application built using React and Google Gemini AI. The chatbot has a fun and casual personality, responding in English with Hindi slang.
 
-Currently, two official plugins are available:
+## Features
+- Conversational AI chat.
+- Supports real-time messaging
+- Responsive and modern UI with a chat bubble format
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- React (Functional Components & Hooks)
+- TypeScript
+- Tailwind CSS
+- Google Gemini AI (via `@google/genai` API)
 
-## Expanding the ESLint configuration
+## Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/lakshayb30/Slangster.git
+   cd slangster
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Run the development server:
+   ```sh
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Usage
+- Open the application in your browser.
+- Start typing a message in the input box and press enter or click the send button.
+- The chatbot will reply with casual, slang-filled responses in a conversational tone.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Screenshots
+![image](https://github.com/user-attachments/assets/15f700da-0b1a-41f6-ae59-fe92a23ad818)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Future Enhancements
+- Add support for voice input and output.
+- Improve UI/UX with animations.
+- Store conversation history.
