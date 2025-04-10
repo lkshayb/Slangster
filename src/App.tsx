@@ -1,15 +1,24 @@
-import { useRef, useState } from 'react'
+import { useRef, useState ,useEffect} from 'react'
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
 
 function App() {
-  interface Message {
+
+  
+
+  interface Message { 
     msg: string;
     type: string;
   } 
   const [messages,setmessages] = useState<Message[]>([])
   const chatref = useRef<HTMLInputElement>(null)
   const ai = new GoogleGenAI({ apiKey: "AIzaSyAUOMKTtMI6zeHTnoK9xj0WGK6JUSgxIC4" });
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+  (messagesEndRef.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+}, [messages]);
 
   async function sendreq(message : string){
     const conversationHistory = messages.map(m => m.msg).join("\n");
@@ -75,8 +84,10 @@ function App() {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef}></div>
           </div>
         </div>
+        
 
         {/* Input Section - keeping the existing input code */}
         <div className='fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg'>
