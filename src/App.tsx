@@ -1,18 +1,16 @@
 import { useRef, useState ,useEffect} from 'react'
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 function App() {
-
-  
-
   interface Message { 
     msg: string;
     type: string;
   } 
   const [messages,setmessages] = useState<Message[]>([])
   const chatref = useRef<HTMLInputElement>(null)
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyAUOMKTtMI6zeHTnoK9xj0WGK6JUSgxIC4" });
+  const ai = new GoogleGenAI({ apiKey: apiKey });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
