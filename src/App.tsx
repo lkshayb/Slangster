@@ -2,6 +2,7 @@ import { useRef, useState ,useEffect} from 'react'
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const prompt = import.meta.env.VITE_PROMPT
 
 function App() {
   interface Message { 
@@ -20,7 +21,7 @@ function App() {
 
   async function sendreq(message : string){
     const conversationHistory = messages.map(m => m.msg).join("\n");
-    const personality = "Talk like a Delhi guy who uses a lot of Hindi slang. Keep responses short, casual, and conversational. Write in English but use Hindi words in slang style. Don't mention that you're from Delhi!"
+    const personality = prompt
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: personality + "\n" + conversationHistory + "\n" + message,
