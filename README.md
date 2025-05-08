@@ -35,7 +35,8 @@ This is a simple AI-powered chatbot application built using React and Google Gem
 
 
 ## Screenshots
-![image](https://github.com/user-attachments/assets/15f700da-0b1a-41f6-ae59-fe92a23ad818)
+![image](https://github.com/user-attachments/assets/b7da7e15-3609-4f66-8db5-6ffae401d83f)
+
 
 ## Future Enhancements
 - Add support for voice input and output.
