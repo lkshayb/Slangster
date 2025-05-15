@@ -23,7 +23,24 @@ function App() {
       model: "gemini-2.0-flash",
       contents: personality + "\n" + conversationHistory + "\n" + message,
     });
-    setmessages((e) => [...e, { msg: response.text ?? '', type: "#ffffff" }])
+    const content = response.text;
+    function format(content:string | undefined){
+      const parts:any = content?.split(/(\*[^*]+\*)/);
+      
+      return parts.map((part:any,index:any) => {
+        if(part.startsWith('*') && part.endsWith('*')){
+          return (
+            <strong key={index} className='font-semibold'>
+              {part.slice(1,-1)}
+            </strong>
+          )
+        }
+        return part
+      })
+    }
+    const formatedcontent = format(content)
+
+    setmessages((e) => [...e, { msg: formatedcontent ?? ' ', type: "#ffffff" }])
 
   }
 
@@ -75,7 +92,7 @@ function App() {
 
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === "red" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none" : "bg-white shadow-md rounded-bl-none"}`}>
+            <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white shadow-md rounded-bl-none"}`}>
               {message.msg}
             </div>
           </div>
