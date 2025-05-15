@@ -78,7 +78,7 @@ function App() {
           if (chatref.current) {
             chatref.current.focus();
           }
-        } else console.log("hi")
+        } 
       }
       return <div className='flex-1 overflow-y-auto p-4 pb-24' tabIndex={0} onKeyDown={shiftenter}>
         <div className="max-w-4xl mx-auto space-y-4">
