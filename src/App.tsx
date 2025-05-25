@@ -10,11 +10,25 @@ function App() {
     type: string;
   } 
   const [messages,setmessages] = useState<Message[]>([])
+  const [isload,setisload] = useState(false);
   const chatref = useRef<HTMLInputElement>(null)
   const ai = new GoogleGenAI({ apiKey: apiKey });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => (messagesEndRef.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' }), [messages]);
+  useEffect(() => {
+    if(messages.length > 0){
+      const len:number = messages.length - 1
+      if(messages[len]["type"] == "red"){
+        console.log("msg sent by user")
+        setisload(true)
+      }
+      if(messages[len]["type"] == "#ffffff"){
+        setisload(false)
+      }
+    }
+    
+  },[messages])
 
   async function sendreq(message : string){
     const conversationHistory = messages.map(m => m.msg).join("\n");
@@ -97,6 +111,7 @@ function App() {
             </div>
           </div>
         ))}
+        {isload ? (<div> Loading...</div>) : null}
         <div ref={messagesEndRef}></div>
       </div>
     </div>
