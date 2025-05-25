@@ -1,6 +1,7 @@
 import { useRef, useState ,useEffect} from 'react'
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
+import { SyncLoader } from 'react-spinners';
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const prompt = import.meta.env.VITE_PROMPT
 
@@ -111,7 +112,14 @@ function App() {
             </div>
           </div>
         ))}
-        {isload ? (<div> Loading...</div>) : null}
+        {isload ? (<div>
+          <SyncLoader
+            color="#ef1d6a"
+            margin={2}
+            size={10}
+            speedMultiplier={0.3}
+          />
+        </div>) : null}
         <div ref={messagesEndRef}></div>
       </div>
     </div>
