@@ -1,4 +1,4 @@
-# ChatBot App
+# SlangSter
 
 This is a simple AI-powered chatbot application built using React and Google Gemini AI. The chatbot has a fun and casual personality, responding in English with Hindi slang.
 
