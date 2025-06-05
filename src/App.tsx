@@ -112,10 +112,10 @@ function App() {
             </div>
           </div>
         ))}
-        {isload ? (<div>
+        {isload ? (<div className='mt-[50px]'>
           <SyncLoader
             color="#ef1d6a"
-            margin={2}
+            margin={3}
             size={10}
             speedMultiplier={0.3}
           />
