@@ -1,4 +1,5 @@
 import { useRef, useState ,useEffect} from 'react'
+import Markdown from 'react-markdown';
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
 import { SyncLoader } from 'react-spinners';
@@ -39,23 +40,8 @@ function App() {
       contents: personality + "\n" + conversationHistory + "\n" + message,
     });
     const content = response.text;
-    function format(content:string | undefined){
-      const parts:any = content?.split(/(\*[^*]+\*)/);
-      
-      return parts.map((part:any,index:any) => {
-        if(part.startsWith('*') && part.endsWith('*')){
-          return (
-            <strong key={index} className='font-semibold'>
-              {part.slice(1,-1)}
-            </strong>
-          )
-        }
-        return part
-      })
-    }
-    const formatedcontent = format(content)
 
-    setmessages((e) => [...e, { msg: formatedcontent ?? ' ', type: "#ffffff" }])
+    setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
 
   }
 
@@ -108,7 +94,7 @@ function App() {
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === "red" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white shadow-md rounded-bl-none"}`}>
-              {message.msg}
+              {message.type === "red" ? message.msg : <Markdown>{message.msg}</Markdown>}
             </div>
           </div>
         ))}
