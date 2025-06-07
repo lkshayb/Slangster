@@ -100,6 +100,7 @@ function App() {
       setmessages((e) => [...e, { msg: message, type: "red" }]);
       sendreq(message,selectedImage);
       if (chatref.current) chatref.current.value = '';
+      setSelectedImage(null);
     };
 
     const SendOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
