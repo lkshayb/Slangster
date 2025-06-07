@@ -12,6 +12,7 @@ function App() {
     type: string;
   } 
   const [messages,setmessages] = useState<Message[]>([])
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isload,setisload] = useState(false);
   const chatref = useRef<HTMLInputElement>(null)
   const ai = new GoogleGenAI({ apiKey: apiKey });
@@ -32,25 +33,72 @@ function App() {
     
   },[messages])
 
-  async function sendreq(message : string){
-    const conversationHistory = messages.map(m => m.msg).join("\n");
-    const personality = prompt
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: personality + "\n" + conversationHistory + "\n" + message,
-    });
-    const content = response.text;
+  async function sendreq(message : string,selectedImage:any){
+    if(selectedImage){
+      const base64 = await convertToBase64(selectedImage);
+      const conversationHistory = messages.map(m => m.msg).join("\n");
+      const personality = prompt
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: [
+          {
+            role:"user",
+            parts : [
+              {
+                text : `${personality}\n${conversationHistory}\n${message}`
+              },
+              {
+                inlineData : {
+                  mimeType : selectedImage.type,
+                  data : base64,
+                }
+              }
+            ]
+            
+          }
+        ] as any ,
+      });
+      const content = response.text;
 
-    setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+      setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+    }
+    else{
+      const conversationHistory = messages.map(m => m.msg).join("\n");
+      const personality = prompt
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents :  `${personality}\n${conversationHistory}\n${message}`
+      });
+      const content = response.text;
+
+      setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+    }
+    
 
   }
 
+  const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64 = (reader.result as string).split(',')[1];
+      resolve(base64);
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Failed to convert blob to base64"));
+    };
+
+    reader.readAsDataURL(file);
+  });
+};
   function MainPage(){
     const handleSubmit = () => {
       const message = chatref.current?.value;
       if (!message) return alert("Please enter a valid message");
       setmessages((e) => [...e, { msg: message, type: "red" }]);
-      sendreq(message);
+      sendreq(message,selectedImage);
       if (chatref.current) chatref.current.value = '';
     };
 
@@ -83,7 +131,7 @@ function App() {
       }
       return <div className='flex-1 overflow-y-auto p-4 pb-24' tabIndex={0} onKeyDown={shiftenter}>
         <div className="max-w-4xl mx-auto space-y-4">
-
+        
         {messages.length === 0 && (
           <div className="text-center mt-40">
             <p className="text-3xl font-semibold  font-black font-sans">Hi! I'm Slangster</p>
@@ -93,7 +141,7 @@ function App() {
 
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === "red" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white shadow-md rounded-bl-none"}`}>
+            <div className={` rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white shadow-md rounded-bl-none"}`}>
               {message.type === "red" ? message.msg : <Markdown>{message.msg}</Markdown>}
             </div>
           </div>
@@ -112,8 +160,22 @@ function App() {
     }
 
     function Input(){
+      const handleImageChange = (e:any) => {
+        const file = e.target.files?.[0];
+        if (file) {
+          
+          setSelectedImage(file);
+        }
+      };
+      
       return <div className='fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg'>
-      <div className='max-w-4xl mx-auto flex gap-3 '>
+        
+      <div className='max-w-4xl mx-auto flex gap-3  items-center'>
+        {selectedImage && (<img src={URL.createObjectURL(selectedImage)} className='w-[50px] h-[50px] rounded-2xl' />)}
+        <label  htmlFor="file-upload"  className="cursor-pointer h-7 mr-5 w-7 text-gray-500 hover:text-blue-600 items-center">
+          <img src="./image.png" alt="" />
+        </label>
+        <input accept="image/*" id="file-upload" onChange={handleImageChange} type="file" className="hidden" />
         <input ref={chatref} type="text" placeholder='Type your message [Shift + Enter]' onKeyDown={SendOnEnter} className='flex-1 px-4 py-2 rounded-full border border-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-xl'/>
         <button onClick={handleSubmit} disabled={isload} className={`${isload ? "cursor-not-allowed" : "cursor-pointer"} px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-blue-500/50 `}>
           Send
