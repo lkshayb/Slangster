@@ -34,7 +34,7 @@ function App() {
   },[messages])
 
   async function sendreq(message : string,selectedImage:any){
-    if(selectedImage){
+    if(selectedImage && message){
       const base64 = await convertToBase64(selectedImage);
       const conversationHistory = messages.map(m => m.msg).join("\n");
       const personality = prompt
@@ -46,6 +46,35 @@ function App() {
             parts : [
               {
                 text : `${personality}\n${conversationHistory}\n${message}`
+              },
+              {
+                inlineData : {
+                  mimeType : selectedImage.type,
+                  data : base64,
+                }
+              }
+            ]
+            
+          }
+        ] as any ,
+      });
+      const content = response.text;
+
+      setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+    }
+
+    else if(selectedImage){
+      const base64 = await convertToBase64(selectedImage);
+      const conversationHistory = messages.map(m => m.msg).join("\n");
+      const personality = prompt
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: [
+          {
+            role:"user",
+            parts : [
+              {
+                text : `${personality}\n${conversationHistory}`
               },
               {
                 inlineData : {
@@ -96,9 +125,12 @@ function App() {
   function MainPage(){
     const handleSubmit = () => {
       const message = chatref.current?.value;
-      if (!message) return alert("Please enter a valid message");
-      setmessages((e) => [...e, { msg: message, type: "red" }]);
-      sendreq(message,selectedImage);
+      if (!message && !selectedImage) {
+        alert("Please enter a valid message");
+        return;
+      }
+      setmessages((e) => [...e, { msg: message || "[image sent]", type: "red" }]);
+      sendreq(message || "",selectedImage);
       if (chatref.current) chatref.current.value = '';
       setSelectedImage(null);
     };
