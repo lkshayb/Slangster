@@ -162,8 +162,8 @@ function App() {
           }
         } 
       }
-      return <div className='flex-1 overflow-y-auto p-4 pb-24' tabIndex={0} onKeyDown={shiftenter}>
-        <div className="max-w-4xl mx-auto space-y-4">
+      return <div className=' p-4 pb-24 ' tabIndex={0} onKeyDown={shiftenter}>
+        <div className="max-w-4xl mx-auto space-y-4 flex-1 overflow-y-auto scrollbar-hide">
         
         {messages.length === 0 && (
           <div className="text-center mt-40">
@@ -174,7 +174,7 @@ function App() {
 
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === "red" ? "justify-end" : "justify-start"}`}>
-            <div className={` rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white shadow-md rounded-bl-none"}`}>
+            <div className={` rounded-2xl px-4 py-2 ${message.type === "red" ? "bg-blue-500 text-white rounded-br-none shadow-md shadow-blue-500" : "bg-white  rounded-bl-none"}`}>
               {message.type === "red" ? message.msg : <Markdown>{message.msg}</Markdown>}
             </div>
           </div>
@@ -187,8 +187,9 @@ function App() {
             speedMultiplier={0.3}
           />
         </div>) : null}
-        <div ref={messagesEndRef}></div>
+       
       </div>
+       <div ref={messagesEndRef}></div>
     </div>
     }
 
@@ -221,7 +222,7 @@ function App() {
     }
 
     return(
-      <div className="h-screen flex flex-col bg-gradient-to-b from-orange-50 to-blue-50">
+      <div className="h-full min-h-screen flex flex-col bg-gradient-to-b from-orange-50 to-blue-50">
         <Header/>
         <MainPart/>
         <Input/>
