@@ -67,29 +67,37 @@ function App() {
       const base64 = await convertToBase64(selectedImage);
       const conversationHistory = messages.map(m => m.msg).join("\n");
       const personality = prompt
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: [
-          {
-            role:"user",
-            parts : [
-              {
-                text : `${personality}\n${conversationHistory}`
-              },
-              {
-                inlineData : {
-                  mimeType : selectedImage.type,
-                  data : base64,
+      try {
+        const response = await ai.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: [
+            {
+              role:"user",
+              parts : [
+                {
+                  text : `${personality}\n${conversationHistory}`
+                },
+                {
+                  inlineData : {
+                    mimeType : selectedImage.type,
+                    data : base64,
+                  }
                 }
-              }
-            ]
-            
-          }
-        ] as any ,
-      });
-      const content = response.text;
-
-      setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+              ]
+              
+            }
+          ] as any ,
+        });
+        const content = response.text;
+        setmessages((e) => [...e, { msg: content ?? ' ', type: "#ffffff" }])
+      }catch (err:any){
+        if(err.status === 404){
+          setisload(false);
+          alert("Server is Overloaded , Please try Later")
+        }
+      }
+      
+      
     }
     else{
       const conversationHistory = messages.map(m => m.msg).join("\n");
