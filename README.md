@@ -16,7 +16,7 @@ This is a simple AI-powered chatbot application built using React and Google Gem
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/lakshayb30/Slangster.git
+   git clone https://github.com/lkshaybs/Slangster.git
    cd slangster
    ```
 2. Install dependencies:
@@ -35,7 +35,7 @@ This is a simple AI-powered chatbot application built using React and Google Gem
 
 
 ## Screenshots
-![image](https://github.com/user-attachments/assets/b7da7e15-3609-4f66-8db5-6ffae401d83f)
+![image](https://github.com/user-attachments/assets/a3bbe0e4-2a84-48d9-b269-be331a550fe7)
 
 
 ## Future Enhancements
