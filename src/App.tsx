@@ -197,7 +197,7 @@ function App() {
         </div>) : null}
        
       </div>
-       <div ref={messagesEndRef}></div>
+       <div className="mt-[50px]" ref={messagesEndRef}></div>
     </div>
     }
 
