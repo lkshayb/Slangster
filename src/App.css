@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input {
+  caret-shape: block; /* ⚠️ only experimental, works in very few browsers */
+}
