@@ -1,6 +1,6 @@
 import { useRef, useState ,useEffect} from 'react'
 import Markdown from 'react-markdown';
-import {Send} from 'lucide-react';
+import {ImageUp, Send, X} from 'lucide-react';
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
 import { SyncLoader } from 'react-spinners';
@@ -217,14 +217,8 @@ function App() {
     }
 
     function Input(){
-      const handleImageChange = (e:any) => {
-        const file = e.target.files?.[0];
-        if (file) {
-          
-          setSelectedImage(file);
-        }
-      };
-      
+      const handleImageChange = (e:any) =>  {if(e.target.files?.[0]) setSelectedImage(e.target.files?.[0])}
+    
       return <div className='fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg'>
         
       <div className='max-w-4xl mx-auto flex gap-3  items-center'>
@@ -234,9 +228,19 @@ function App() {
           Send
           <Send className='h-5 w-5 group-hover:rotate-[20deg] duration-500 '/>
         </button> 
-        {selectedImage && (<img src={URL.createObjectURL(selectedImage)} className='w-[50px] h-[50px] rounded-2xl' />)}
-        <label  htmlFor="file-upload"  className="cursor-pointer h-7 mr-5 w-7 text-gray-500 hover:text-blue-600 items-center">
-          <img src="./image.png" alt="" />
+
+        {selectedImage && (
+          <div className='group relative w-[50px] h-[50px]  duration-300 transition-all cursor-pointer'>
+            <img src={URL.createObjectURL(selectedImage)} className='w-full h-full object-cover rounded-md' />
+ 
+            <div onClick={() => setSelectedImage(null)} className="group-hover:flex hidden absolute inset-0 bg-red-600/80 items-center justify-center rounded-md duration-300">
+              <X className='text-white'/>
+            </div>
+          </div>
+          
+        )}
+        <label  htmlFor="file-upload">
+          <ImageUp className='cursor-pointer h-7 mr-5 w-7 text-gray-500 hover:text-blue-600 items-center'/>
         </label>
         <input accept="image/*" id="file-upload" onChange={handleImageChange} type="file" className="hidden" />
       </div>
