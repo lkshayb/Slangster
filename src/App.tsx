@@ -217,11 +217,11 @@ function App() {
     function Input(){
       const handleImageChange = (e:any) =>  {if(e.target.files?.[0]) setSelectedImage(e.target.files?.[0])}
     
-      return <div className='fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg'>
+      return <div className='fixed bottom-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg duration-300'>
         
       <div className='max-w-4xl mx-auto flex gap-3  items-center'>
         
-        <input ref={chatref} type="text" placeholder='Type your message' onKeyDown={SendOnEnter} className='flex-1 px-4 py-2 rounded-xl outline-none   transition-all bg-black/10 placeholder-gray-700 caret-white   text-xl'/>
+        <input ref={chatref} type="text" placeholder='Type your message' onKeyDown={SendOnEnter} className='flex-1 px-4 py-2 rounded-xl outline-none   transition-all bg-black/10 placeholder-gray-400 caret-white text-gray-600 text-thin  text-md'/>
         <button onClick={handleSubmit} disabled={isload} className={` group ${isload ? "cursor-not-allowed" : "cursor-pointer"} px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 shadow-lg shadow-blue-500/50 `}>
           Send
           <Send className='h-5 w-5 group-hover:rotate-[20deg] duration-500 '/>
