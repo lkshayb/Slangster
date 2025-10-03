@@ -42,10 +42,14 @@ function App() {
         model: "gemini-2.0-flash",
         contents: [
           {
+            role:"model",
+            text: `${personality}\n${conversationHistory}`
+          },
+          {
             role:"user",
             parts : [
               {
-                text : `${personality}\n${conversationHistory}\n${message}`
+                text : `${message}`
               },
               {
                 inlineData : {
@@ -72,11 +76,12 @@ function App() {
           model: "gemini-2.0-flash",
           contents: [
             {
+              role:"model",
+              text: `${personality}\n${conversationHistory}`
+            },
+            {
               role:"user",
               parts : [
-                {
-                  text : `${personality}\n${conversationHistory}`
-                },
                 {
                   inlineData : {
                     mimeType : selectedImage.type,
@@ -104,7 +109,16 @@ function App() {
       const personality = prompt
       const response = await ai.models.generateContent({
         model: "gemini-2.0-flash",
-        contents :  `${personality}\n${conversationHistory}\n${message}`
+        contents :  [
+          {
+            role:"model",
+            text: `${personality}\n${conversationHistory}`
+          },
+          {
+            role:"user",
+            text: `${message}`
+          }
+        ]
       });
       const content = response.text;
 
