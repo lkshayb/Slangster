@@ -4,14 +4,17 @@ import {ImageUp, Send, X} from 'lucide-react';
 import './App.css'
 import { GoogleGenAI } from "@google/genai";
 import { SyncLoader } from 'react-spinners';
+
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 const prompt = import.meta.env.VITE_PROMPT
 
 function App() {
+
   interface Message { 
     msg: string;
     type: string;
   } 
+
   const [messages,setmessages] = useState<Message[]>([])
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isload,setisload] = useState(false);
@@ -20,18 +23,13 @@ function App() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => (messagesEndRef.current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' }), [messages]);
+
   useEffect(() => {
-    if(messages.length > 0){
-      const len:number = messages.length - 1
-      if(messages[len]["type"] == "red"){
-        console.log("msg sent by user")
-        setisload(true)
-      }
-      if(messages[len]["type"] == "#ffffff"){
-        setisload(false)
-      }
+    const len = messages.length;
+    if(len > 0){
+      if(messages[len-1]["type"] == "red") setisload(true)
+      if(messages[len-1]["type"] == "#ffffff") setisload(false)
     }
-    
   },[messages])
 
   async function sendreq(message : string,selectedImage:any){
@@ -50,7 +48,7 @@ function App() {
             role:"user",
             parts : [
               {
-                text : `${message}`
+                text : message
               },
               {
                 inlineData : {
@@ -130,21 +128,21 @@ function App() {
   }
 
   const convertToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
-    reader.onloadend = () => {
-      const base64 = (reader.result as string).split(',')[1];
-      resolve(base64);
-    };
+      reader.onloadend = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        resolve(base64);
+      };
 
-    reader.onerror = () => {
-      reject(new Error("Failed to convert blob to base64"));
-    };
+      reader.onerror = () => {
+        reject(new Error("Failed to convert blob to base64"));
+      };
 
-    reader.readAsDataURL(file);
-  });
-};
+      reader.readAsDataURL(file);
+    });
+  };
   function MainPage(){
     const handleSubmit = () => {
       const message = chatref.current?.value;
