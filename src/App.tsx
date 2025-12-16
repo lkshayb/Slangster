@@ -38,7 +38,7 @@ function App() {
       const conversationHistory = messages.map(m => m.msg).join("\n");
       const personality = prompt
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-1.5-flash",
         contents: [
           {
             role:"model",
@@ -72,7 +72,7 @@ function App() {
       const personality = prompt
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-2.0-flash",
+          model: "gemini-1.5-flash",
           contents: [
             {
               role:"model",
@@ -107,7 +107,7 @@ function App() {
       const conversationHistory = messages.map(m => m.msg).join("\n");
       const personality = prompt
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-1.5-flash",
         contents :  [
           {
             role:"model",
